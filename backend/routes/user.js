@@ -116,18 +116,5 @@ router.put("/update-address", authenticateToken, async(req, res) =>{
     }
 });
 
-//get book by id
-router.get("/get-book-by-id/:id", async(req,res) =>{
-    try{
-       const{ id } = req.params;
-       const book = await Book.findById(id);
-       return res.json({
-        status:"Success",
-        data: book,
-       });
-    }catch(error){
-      console.log(error);
-       return res.status(500).json({ message : "An error occurred"});
-    }
-});
+
 module.exports = router;

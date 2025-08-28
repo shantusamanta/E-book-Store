@@ -68,28 +68,33 @@ router.delete("/delete-book", authenticateToken, async(req, res) => {
 });
 
 //get all books - updated route to match frontend
-router.get("/books", async(req,res) =>{
+router.get("/get-all-books", async(req,res) =>{
   try{
      const books = await Book.find().sort({ createdAt: -1});
-     return res.json(books);
+     return res.json({
+      status: "success",
+      data: books,
+     });
   }catch(error){
           console.log(error);
           return res.status(500).json({ message : "An error occured "});
   }
 });
 
-//get single book by ID
-router.get("/books/:id", async(req,res) =>{
-  try{
-     const book = await Book.findById(req.params.id);
-     if (!book) {
-       return res.status(404).json({ message: "Book not found" });
-     }
-     return res.json(book);
-  }catch(error){
-          console.log(error);
-          return res.status(500).json({ message : "An error occured "});
-  }
+
+//get book by id
+router.get("/get-book-by-id/:id", async(req,res) =>{
+    try{
+       const{ id } = req.params;
+       const book = await Book.findById(id);
+       return res.json({
+        status:"Success",
+        data: book,
+       });
+    }catch(error){
+      console.log(error);
+       return res.status(500).json({ message : "An error occurred"});
+    }
 });
 
 //get recently added books limit 4
